@@ -1,0 +1,31 @@
+.login {
+    background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7) ), url('/images/login-new.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.error-notice{
+    margin:5px; /* Make sure to keep some distance from all sides */
+  }
+  .oaerror{
+    width:80%;
+    background-color: #923a3a;
+    padding:20px;
+    border:1px solid #eee;
+    border-left-width:5px;
+    border-radius: 3px;
+    margin:10px auto;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+  }
+  
+  .danger{
+    border-left-color: #ce403b; /* Left side border color */
+    background-color: rgba(156, 46, 43, 0.1); /*Same color as the left border with reduced alpha to 0.1*/
+  }
+  .error{
+    font-weight: bold;
+    color: #ce403b
+  }
+.imageBorder{
+  border: 5px solid rgb(52, 235, 225);
+}
