@@ -1,4 +1,7 @@
 import FormData from 'form-data'
+import axios from 'axios'
+import cookie from "js-cookie";
+
 export const registerHandle = async (credentials) => {
     let info;
     const req = {
@@ -15,25 +18,86 @@ export const registerHandle = async (credentials) => {
 
             const data = await response.json();
             const token = data.token
-            const expiresIn = data.expires
-            document.cookie = `token=${token};expires=${expiresIn}`
+            await cookie.set('token', token)
             info = data
         })
-    console.log(info);
     return info
 }
 export const profileUpdate = async (data) => {
-    let form = new FormData();
-    form.append('file', data.src)
+    var info = {}
+    //sending data using formData
+    // //console.log(data.src)
+    // let form = new FormData();
+    // form.append('file', data.src)
+    // //form.append('username', data.username)
+    // // const req = {
+    // //     method: 'POST',
+    // //     body: form,
 
+    // // }
+    // axios.post('http://localhost:8000/api/users/uploadProfilePicture', form, {
+    //     headers: {
+    //         "Content-Type": " multipart/form-data; boundary=something"
+    //     }
+    // })
+    //     .then((res) => console.log(res))
     const req = {
-        method: 'POST',
-        body: form,
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
         headers: {
-            "Content-type": "multipart / form - data ; charset=UTF-8"
-        }
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     }
-    fetch('http://localhost:8000/api/users/uploadProfilePicture', req)
-        .then((res) => res.json())
-        .then((data) => console.log(data))
+    await fetch('http://localhost:8000/api/users/uploadProfilePicture', req)
+        .then((response) => response.json())
+        .then((data) => info = data)
+    return info
+}
+
+export const uploadPost = async (data) => {
+    var info = {}
+    //sending data using formData
+    // //console.log(data.src)
+    // let form = new FormData();
+    // form.append('file', data.src)
+    // //form.append('username', data.username)
+    // // const req = {
+    // //     method: 'POST',
+    // //     body: form,
+
+    // // }
+    // axios.post('http://localhost:8000/api/users/uploadProfilePicture', form, {
+    //     headers: {
+    //         "Content-Type": " multipart/form-data; boundary=something"
+    //     }
+    // })
+    //     .then((res) => console.log(res))
+    const req = {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+    await fetch('http://localhost:8000/post/createPost', req)
+        .then((response) => response.json())
+        .then((data) => info = data)
+    return info
+}
+
+
+export const updatePost = async (data) => {
+    // console.log(data);
+    let info = {}
+    const req = {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }
+    await fetch('http://localhost:8000/api/users/updateProfile', req)
+        .then(response => response.json())
+        .then(data => { info = data })
+    return info
 }

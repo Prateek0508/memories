@@ -11,49 +11,35 @@ import Posts from '../posts';
 import Addpost from './addMemories'
 import Search from './search'
 import Profile from './profile'
-const LandingOPage = () => {
+const LandingOPage = (props) => {
     const [page, setPage] = useState('home')
-    useEffect(() => {
-        (
-            async () => {
-                const user = await isAuth()
-
-                if (user.success) {
-
-                }
-                else {
-                    deleteCokkies()
-                    alert('you are loged out')
-                    Router.push('/')
-                }
-            }
-        )()
-    }, [])
-    let Home = <Posts />
-    switch (page) {
-        case 'home': Home = <Posts />
-            break;
-        case 'search': Home = <Search />
-            break;
-        case 'add': Home = <Addpost />
-            break;
-        case 'profile': Home = <Profile />
-            break;
-    }
-
-
-
+    const [user, setUser] = useState(props.userInformation)
+    const[posts,setPosts] = useState(props.posts)
     const pageHandler = (option) => {
         setPage(option)
     }
+    let Home = null
+    switch (page) {
+        case 'home': Home = <Posts userInfo={user} posts={posts} />
+            break;
+        case 'search': Home = <Search userInfo={user}/>
+            break;
+        case 'add': Home = <Addpost userInfo={user}/>
+            break;
+        case 'profile': Home = <Profile userInfo={user}/>
+            break;
+    }
+
+
     return (
         <>
-            <div className="min-h-screen  bg-white-100">
+            <div className="min-h-screen mb-10 bg-white-100">
                 {Home}
                 <div className="block fixed inset-x-0 bottom-0 z-10">
                     <Footer page={pageHandler} />
                 </div>
             </div>
+
         </>
     )
 }

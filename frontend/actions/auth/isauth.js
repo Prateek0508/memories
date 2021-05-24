@@ -1,6 +1,6 @@
 import cookie from "js-cookie";
 export const isAuth = async () => {
-    let user = {}
+    let info = {}
     const token = cookie.get('token')
     const req = {
         method: "GET",
@@ -12,14 +12,12 @@ export const isAuth = async () => {
     await fetch('http://localhost:8000/api/users/protected', req)
         .then(response => response.json())
         .then(data => {
-
-            if (data) user = { user: data.user, success: data.success }
-
+            info = data
         })
         .catch(err => {
             if (err.status === 401) user = { success: false }
         })
-    return user
+    return info
 }
 export const deleteCokkies = () => {
     cookie.remove('token', {

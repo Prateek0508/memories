@@ -2,15 +2,17 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const postSchema = new mongoose.Schema({
     user: {
-        type: String,
-        ref: User,
-        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     },
-    heading: {
+    title: {
         type: String,
         trim: true,
-        required: true,
         max: 32
+    },
+    caption: {
+        type: String,
+        trim: true
     },
     picture: {
         type: String,
@@ -20,16 +22,29 @@ const postSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    likes:{
+        type: Array,
+        default: [],
+        ref:'User'
+    },
+    comments:{
+        type: Array,
+        default: [],
+        ref:'User'
+    },
     no_of_comments: {
         type: Number,
         default: 0,
     },
+    
     time: {
         type: String,
         default: ""
-    }
+    },
+    comments: [String]
 }, {
     timestamps: true
 })
 mongoose.model('Post', postSchema);
+console.log("post model created");
 module.exports = mongoose.model('Post', postSchema);

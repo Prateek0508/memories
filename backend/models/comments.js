@@ -8,13 +8,11 @@ const userSchema = new mongoose.Schema({
     post_id: {
         type: String,
     },
-    commented_by: {
-        type: String,
-
+    user:{
+        type:String,
+        ref:'user'
     },
-    commented_on: {
-        type: String,
-    }
 })
-mongoose.model('User', userSchema);
-module.exports = mongoose.model('user', userSchema);
+mongoose.model('Comment', userSchema);
+console.log('comment model created');
+module.exports = mongoose.model('comment', userSchema);

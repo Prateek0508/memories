@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import { useState, useEffect } from "react";
 export default function Navbar(props) {
     const [home, sethome] = useState(true)
+    
     const [search, setsearch] = useState(false)
 
     const [add, setadd] = useState(false)

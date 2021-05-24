@@ -1,4 +1,4 @@
-
+import cookie from "js-cookie";
 export const loginCheck = async (credentials) => {
     let info;
     const req = {
@@ -15,8 +15,7 @@ export const loginCheck = async (credentials) => {
             let data = await reqItem.json()
             if (data.success) {
                 const token = data.token
-                const expiresIn = data.expires
-                document.cookie = `token=${token};expires=${expiresIn}`
+                await cookie.set('token', token)
                 info = {
                     "success": data.success
                 }

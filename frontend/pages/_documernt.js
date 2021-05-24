@@ -11,7 +11,7 @@ class MyDocument extends Document {
                 <Head>
                     <link rel="stylesheet" href="../static/styles/styles.css" />
                     <link rel="preconnect" href="https://fonts.gstatic.com" />
-                    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet" />
+                    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Oswald:wght@300&display=swap" rel="stylesheet" />
                 </Head>
                 <body>
                     <Main />

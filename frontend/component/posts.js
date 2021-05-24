@@ -1,38 +1,32 @@
+import Button from '@material-ui/core/Button';
+import Singlepost from './src/post'
+import { useState, useEffect } from 'react'
+import { getPosts } from '../actions/post/post'
+export default function posts(props) {
+    const [post, setPost] = useState(props.posts)
+    const [user,setUser]=useState(props.userInfo)
+    let postCard = post.posts.map((post, i) => {
+        return <Singlepost
+            key={i}
+            username={post.user.username}
+            profileImage={`http://localhost:8000/profilePictures/${post.user.profile_pic}`}
+            title={post.title}
+            postImage={`http://localhost:8000/posts/${post.picture}`}
+            likes={post.no_of_likes}
+            caption={post.caption}
+            commentsCount={post.no_of_comments}
+            comments={post.comments}
+            likedBy={user._id}
+            likedto={post._id}
 
-import { Paper, Grid } from '@material-ui/core';
-
-export default function posts() {
+        />
+    })
     return (
         <>
             <h1 className="text-center text-4xl font-bold mb-1" style={{ fontFamily: 'Lato' }}>  Memories</h1>
-            <Grid container spacing={3} className="mt-1" >
-                <Grid item xs={12} sm={4} md={3} >
-                    <Paper className="bg-gray h-80" >pp</Paper>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <Paper className="bg-gray h-80">pp</Paper>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3} >
-                    <Paper className="bg-gray h-80">pp</Paper>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <Paper className="bg-gray h-80">pp</Paper>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3} >
-                    <Paper className="bg-gray h-80">pp</Paper>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <Paper className="bg-gray h-80">pp</Paper>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3} >
-                    <Paper className="bg-gray h-80">pp</Paper>
-                </Grid>
-                <Grid item xs={12} sm={4} md={3}>
-                    <Paper className="bg-gray h-80">pp</Paper>
-                </Grid>
-
-            </Grid>
+            <div className="grid grid-cols-1 w-full lg:w-1/3  mx-auto gap-5 ">
+                {postCard}
+            </div>
         </>
     )
 }
-{/*  */ }

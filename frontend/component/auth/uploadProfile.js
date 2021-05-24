@@ -4,12 +4,15 @@ import { isAuth, deleteCokkies } from '../../actions/auth/isauth'
 import LazyImage from '../src/UI/LazyImage'
 import FormData from 'form-data'
 import { profileUpdate } from '.././../actions/register/register'
+import { defaultprofile } from '../../public/defaultProfile'
 export default function Upload() {
     const [user, updateUser] = useState({
         "user": {},
+        "error": null,
+        "bio": ''
     })
     const [profile, updateProfile] = useState({
-        "src": "/images/profile.jpg",
+        "src": defaultprofile.profile,
         file: {}
     })
     useEffect(() => {
@@ -18,7 +21,6 @@ export default function Upload() {
                 const user = await isAuth()
                 if (user.success) {
                     updateUser({ ...user, "user": user.user })
-
                 }
                 else {
                     deleteCokkies()
@@ -28,32 +30,46 @@ export default function Upload() {
         )()
     }, [])
     const bioChangeHandler = (e) => {
-        let newUser = user.user
-        newUser = { ...newUser, bio: e.target.value }
-        updateUser({ user: newUser })
-        console.log(user.user)
+        updateUser({ ...user, "bio": e.target.value })
     }
     const photoUpload = e => {
         e.preventDefault();
         const reader = new FileReader();
         const imgFile = e.target.files[0];
-        reader.onloadend = () => {
-            updateProfile({
-                "src": reader.result,
-                file: imgFile
-            });
+        if (imgFile.size / 1024 / 1024 > 4) {
+            updateUser({ ...user, 'error': 'file size is too large' })
         }
-        reader.readAsDataURL(imgFile);
+
+        else {
+            reader.onloadend = () => {
+                updateProfile({
+                    "src": reader.result,
+                    file: imgFile,
+                });
+            }
+            reader.readAsDataURL(imgFile);
+        }
     }
-    const HandleSubmit = (e) => {
+    const HandleSubmit = async (e) => {
         e.preventDefault();
         const data = {
-            "username": user.user.username,
-            "src": profile.file
+            "_id": (user.user._id).toString(),
+            "src": profile.src,
+            "bio": user.bio
         }
-        profileUpdate(data)
-
+        const info = await profileUpdate(data)
+        if (info.success) {
+            Router.push('/home')
+        }
+        else {
+            updateUser({ ...user, error: info.msg })
+        }
     }
+    const ShowError = user.error && <div className="error-notice">
+        <div className="oaerror danger">
+            <strong className="error">Error</strong><br></br>{user.error}
+        </div>
+    </div>
     const heading = `Hii ${user.user.username}!!! you can upload your profile picture and bio`
     return (
         <>
@@ -65,7 +81,7 @@ export default function Upload() {
                             <form onSubmit={HandleSubmit} className="max-w-sm m-4 p-10 bg-white bg-opacity-25 rounded shadow-xl">
                                 <p className="text-white font-medium text-center text-lg font-bold">{heading}</p>
                                 <label className='mt-10 ' htmlFor="photo-upload">
-                                    <img className="rounded-full imageBorder mx-auto hoverImage  hover:opacity-50" htmlFor="photo-upload" width="80%" src={profile.src} />
+                                    <img width="80%" className="rounded-full imageBorder mx-auto hoverImage  hover:opacity-50" htmlFor="photo-upload" src={profile.src} />
                                     <input className="invisible" id="photo-upload" onChange={photoUpload} type="file" />
                                 </label>
                                 <div className="">
@@ -82,6 +98,7 @@ export default function Upload() {
 
                                     >Done!!!</button>
                                 </div>
+                                {ShowError}
                             </form>
 
                         </div>

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const { isString } = require('util');
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -38,10 +39,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    posts: {
+        type: Array,
+        default: [],
+        ref: 'Post'
+    },
     hash: String,
     salt: String
 }, {
     timestamps: true
 })
 mongoose.model('User', userSchema);
+console.log("user model created");
 module.exports = mongoose.model('user', userSchema);
