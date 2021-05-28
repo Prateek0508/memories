@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const userSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema({
     content: {
         type: String,
         max: 32,
     },
     post_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
     },
-    user:{
-        type:String,
-        ref:'user'
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
 })
-mongoose.model('Comment', userSchema);
-console.log('comment model created');
-module.exports = mongoose.model('comment', userSchema);
+mongoose.model('Comment', commentSchema);
+module.exports = mongoose.model('Comment', commentSchema);

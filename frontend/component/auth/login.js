@@ -18,7 +18,7 @@ const Login = () => {
 
     const showPageHandler = (e) => {
         e.preventDefault()
-        setlogin(false)
+        setlogin(!login)
     }
     const userHandler = (e) => {
         setValue({ ...value, 'userName': e.target.value })
@@ -107,7 +107,7 @@ const Login = () => {
                             </div>
                         </div>
                     </div>
-                ) : <Register />
+                ) : <Register showPageHandler={showPageHandler} />
             }
         </>
     )

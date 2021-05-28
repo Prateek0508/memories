@@ -14,7 +14,7 @@ import Profile from './profile'
 const LandingOPage = (props) => {
     const [page, setPage] = useState('home')
     const [user, setUser] = useState(props.userInformation)
-    const[posts,setPosts] = useState(props.posts)
+    const [posts, setPosts] = useState(props.posts)
     const pageHandler = (option) => {
         setPage(option)
     }
@@ -22,18 +22,17 @@ const LandingOPage = (props) => {
     switch (page) {
         case 'home': Home = <Posts userInfo={user} posts={posts} />
             break;
-        case 'search': Home = <Search userInfo={user}/>
+        case 'search': Home = <Search userInfo={user} />
             break;
-        case 'add': Home = <Addpost userInfo={user}/>
+        case 'add': Home = <Addpost userInfo={user} />
             break;
-        case 'profile': Home = <Profile userInfo={user}/>
+        case 'profile': Home = <Profile userInfo={user} />
             break;
     }
-
-
     return (
         <>
             <div className="min-h-screen mb-10 bg-white-100">
+
                 {Home}
                 <div className="block fixed inset-x-0 bottom-0 z-10">
                     <Footer page={pageHandler} />

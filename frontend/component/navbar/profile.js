@@ -2,11 +2,12 @@ import { updatePost } from '../../actions/register/register'
 import Router from "next/router";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
+import { deleteCokkies } from '../../actions/auth/isauth'
 import Loading from '../loading'
 import { Button } from '@material-ui/core'
 import Singlepost from '../src/post'
 const Profile = (props) => {
-    const userdata=props.userInfo
+    const userdata = props.userInfo
     const [user, updateUser] = useState({
         user: userdata,
         posts: userdata.posts,
@@ -19,12 +20,16 @@ const Profile = (props) => {
             <strong className="error ">Error</strong><br></br>{user.error}
         </div>
     </div>
+    const handleLogout = async() => {
+       await deleteCokkies()
+       Router.push('/')
+    }
     const photoUpload = (e) => {
         e.preventDefault();
         const reader = new FileReader();
         const imgFile = e.target.files[0];
-        if (imgFile.size / 1024 / 1024 > 4) {
-            updatePost({ ...post, error: 'file size is too large' })
+        if (imgFile.size / 1024 / 1024 > 40) {
+            updatePost({ ...user, error: 'file size is too large' })
         }
 
         else {
@@ -61,7 +66,6 @@ const Profile = (props) => {
             _id: user.user._id
         }
         const res = await updatePost(data)
-        console.log(res);
         if (res.success) {
             toggleEdit(false)
         }
@@ -76,6 +80,7 @@ const Profile = (props) => {
         e.preventDefault()
         toggleEdit(true)
     }
+    
     let postCard = user.posts.map((post, i) => {
         return <Singlepost
             key={i}
@@ -85,14 +90,20 @@ const Profile = (props) => {
             postImage={`http://localhost:8000/posts/${post.picture}`}
             likes={post.no_of_likes}
             caption={post.caption}
-            commentsCount={post.no_of_likes}
-            comment={post.comments}
-            editable={true}
+            commentsCount={post.no_of_comments}
+            commentsArray={post.comments}
+            likeArray={post.likes}
+            likedBy={user.user._id}
+            likedto={post._id}
+            userInfo={post.user}
+            CreatedAt={post.createdAt}
+
+
         />
     })
     return (
         <>
-            <div className="grid grid-cols-1 w-full lg:w-1/3 mx-auto ">
+            <div className="grid grid-cols-1 w-full lg:w-1/2 xl:w-1/3 mx-auto ">
                 {edit ?
                     (<div className=" login mb-5 ">
                         <div className="bg-white bg-opacity-90 text-black my-10 mx-5 lg:mx-20 p-10 relative">
@@ -104,11 +115,11 @@ const Profile = (props) => {
                             <h1 className="text-3xl font-bold text-center mt-5" style={{ fontFamily: 'Lato' }} >{name}</h1>
                             <hr className="border-b-1 border-green-500" />
                             <input value={user.user.bio} onChange={bioHandler} className="text-lg bg-transparent border-b-2 border-green-500 focus:outline-none mt-5" />
-                            <button className="px-4 py-1 text-white font-light tracking-wider mt-5 bg-gray-900 hover:bg-gray-800 rounded"
+                            <button className="px-4 py-1 text-white font-light tracking-wider mt-5 focus:outline-none bg-gray-900 hover:bg-gray-800 rounded"
                                 type="submit"
                                 onClick={handleSubmit}
                             >Update</button>
-                            {showError} 
+                            {showError}
                         </div>
                     </div>)
                     : (<div className=" login mb-5 ">
@@ -118,7 +129,10 @@ const Profile = (props) => {
                             <h1 className="text-3xl font-bold text-center mt-5" style={{ fontFamily: 'Lato' }} >{name}</h1>
                             <hr className="border-b-1 border-green-500" />
                             <p className="text-lg mt-5"> {user.user.bio}</p>
-
+                            <button className="px-4 py-1 text-white font-light tracking-wider mt-5 bg-gray-900 hover:bg-gray-800 rounded focus:outline-none"
+                                type="submit"
+                                onClick={handleLogout}
+                            >Logout</button>
                             <div className="absolute top-2 right-2">
                                 <Button onClick={handleEdit} className="focus:outline-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

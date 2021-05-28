@@ -22,26 +22,25 @@ const postSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    likes:{
+    likes: {
         type: Array,
         default: [],
-        ref:'User'
+        ref: 'User'
     },
-    comments:{
+    comments: {
         type: Array,
         default: [],
-        ref:'User'
+        ref: 'Comment'
     },
     no_of_comments: {
         type: Number,
         default: 0,
     },
-    
+
     time: {
         type: String,
         default: ""
-    },
-    comments: [String]
+    }
 }, {
     timestamps: true
 })

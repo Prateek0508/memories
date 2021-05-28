@@ -27,7 +27,6 @@ exports.userRegister = [
         .not()
         .isEmpty()
         .withMessage('Password is required')
-        .matches('[0-9]').withMessage('Password Must Contain a Number')
-        .matches('[A-B]').withMessage('Password Must Contain an Uppercase Letter')
-        .matches('[a-b]').withMessage('Password Must Contain an Lowercase Letter')
+        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, "6").withMessage('Password Must Contain a Number,upper,lowe case charactor')
+       
 ];

@@ -4,7 +4,7 @@ import { registerHandle } from '../../actions/register/register'
 import Loading from '../loading'
 import UploadProfile from '../auth/uploadProfile'
 
-const Register = () => {
+const Register = (props) => {
     const [ShowRegister, updateRegister] = useState(true)
     const [value, setValue] = useState({
         firstName: "",
@@ -162,6 +162,9 @@ const Register = () => {
                                                 type="submit"
                                                 onClick={HandleSubmit}
                                             >Register</button>
+                                            <button className="px-4 py-1 text-white font-light tracking-wider bg-gray-900 hover:bg-gray-800 rounded"
+                                                onClick={props.showPageHandler}
+                                            >Login</button>
                                         </div>
                                         {ShowError}
                                     </form>

@@ -5,6 +5,7 @@ import LazyImage from '../src/UI/LazyImage'
 import FormData from 'form-data'
 import { profileUpdate } from '.././../actions/register/register'
 import { defaultprofile } from '../../public/defaultProfile'
+import Loader from '../loading'
 export default function Upload() {
     const [user, updateUser] = useState({
         "user": {},
@@ -15,10 +16,15 @@ export default function Upload() {
         "src": defaultprofile.profile,
         file: {}
     })
+    const [loading, setLoading] = useState(false)
+    Router.onRouteChangeStart = (url) => setLoading(true);
+    Router.onRouteChangeComplete = (url) => setLoading(false);
+    Router.onRouteChangeError = (url) => setLoading(false);
     useEffect(() => {
         (
             async () => {
                 const user = await isAuth()
+                console.log(user);
                 if (user.success) {
                     updateUser({ ...user, "user": user.user })
                 }
@@ -57,9 +63,10 @@ export default function Upload() {
             "src": profile.src,
             "bio": user.bio
         }
+        console.log(data);
         const info = await profileUpdate(data)
         if (info.success) {
-            Router.push('/home')
+            Router.push('/intoPage')
         }
         else {
             updateUser({ ...user, error: info.msg })
@@ -73,6 +80,7 @@ export default function Upload() {
     const heading = `Hii ${user.user.username}!!! you can upload your profile picture and bio`
     return (
         <>
+            {loading && <Loader />}
             <div className="h-screen font-sans login bg-cover" >
 
                 <div className="container mx-auto h-full flex flex-1 justify-center items-center">

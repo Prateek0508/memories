@@ -6,6 +6,7 @@ import { defaultprofile } from '../../public/defaultProfile'
 import { isAuth, deleteCokkies } from '../../actions/auth/isauth'
 import { uploadPost } from '../../actions/register/register'
 const AddMemories = (props) => {
+    const [loading, setLoading] = useState(false)
     const [post, updatePost] = useState({
         user: props.userInfo,
         src: '/images/unnamed.png',
@@ -15,7 +16,9 @@ const AddMemories = (props) => {
         error: '',
         success: false
     })
-    
+    Router.onRouteChangeStart = (url) => { setLoading(true); }
+    Router.onRouteChangeComplete = (url) => setLoading(false);
+    Router.onRouteChangeError = (url) => setLoading(false);
     const ShowError = post.error && <div className="error-notice">
         <div className="oaerror danger">
             <strong className="error">Error</strong><br></br>{post.error}
@@ -31,7 +34,7 @@ const AddMemories = (props) => {
     const photoUpload = (e) => {
         const reader = new FileReader();
         const imgFile = e.target.files[0];
-        if (imgFile.size / 1024 / 1024 > 4) {
+        if (imgFile.size / 1024 / 1024 > 40) {
             updatePost({ ...post, error: 'file size is too large' })
         }
 
@@ -68,21 +71,24 @@ const AddMemories = (props) => {
             }
             const info = await uploadPost(data)
             if (info.success) {
-                updatePost({
-                    ...post,
-                    src: '/images/unnamed.png',
-                    caption: '',
-                    title: '',
-                    error: '',
-                    success: true
+                Router.reload('/home')
+                // updatePost({
+                //     ...post,
+                //     src: '/images/unnamed.png',
+                //     caption: '',
+                //     title: '',
+                //     error: '',
+                //     success: true
 
-                })
+                // })
             }
             else updatePost({ ...post, error: info.msg })
         }
     }
     return (
         <>
+                {loading&&<Loading/>}
+
             <div className="h-screen font-sans login bg-cover" >
                 <div className="container mx-auto h-full flex flex-1 justify-center items-center">
                     <div className="w-full max-w-lg">
